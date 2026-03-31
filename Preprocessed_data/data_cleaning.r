@@ -6,34 +6,34 @@ library(tidyverse)
 library(caret)
 
 # Tạo danh sách tên cột
-col_names <- c("index", "height", "width", "aspect_ratio", 
+col_names <- c("index", "height", "width", "aspect_ratio",
                paste0("feature_", 1:1555), "class")
 
 # Đọc dữ liệu thô
-dataset <- read.csv("add.csv", 
-                    header = FALSE, 
-                    skip = 1, 
-                    na.strings = c("?", " ?", "  ?"), 
+dataset <- read.csv("add.csv",
+                    header = FALSE,
+                    skip = 1,
+                    na.strings = c("?", " ?", "  ?"),
                     col.names = col_names)
 
 # Làm sạch và chuyển kiểu
-clean_data <- dataset %>%
+clean_data <- dataset |>
   mutate(
     height       = as.numeric(height),
     width        = as.numeric(width),
     aspect_ratio = as.numeric(aspect_ratio),
     class        = as.factor(class)
-  ) %>%
-  filter(class == "ad." | class == "nonad.") %>%
+  ) |>
+  filter(class == "ad." | class == "nonad.") |>
   select(-index)
 
 clean_data$class <- droplevels(clean_data$class)
 
 # ====================== CHIA TRAIN / TEST ======================
 set.seed(123)
-trainIndex <- createDataPartition(clean_data$class, p = 0.8, list = FALSE)
-train_data <- clean_data[trainIndex, ]
-test_data  <- clean_data[-trainIndex, ]
+train_index <- createDataPartition(clean_data$class, p = 0.8, list = FALSE)
+train_data <- clean_data[train_index, ]
+test_data  <- clean_data[-train_index, ]
 
 # ====================== IMPUTATION ======================
 # Chỉ tính median trên tập Train (tránh leakage)
@@ -58,8 +58,7 @@ binary_cols <- paste0("feature_", 1:1555)
 train_data[binary_cols][is.na(train_data[binary_cols])] <- 0
 test_data[binary_cols][is.na(test_data[binary_cols])]   <- 0
 
-# ====================== STANDARDIZATION (có thể bỏ nếu chỉ dùng RF) ======================
-scale_params <- preProcess(train_data[, c("height", "width", "aspect_ratio")], 
+scale_params <- preProcess(train_data[, c("height", "width", "aspect_ratio")],
                            method = c("center", "scale"))
 
 train_data <- predict(scale_params, train_data)
