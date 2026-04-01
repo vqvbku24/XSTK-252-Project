@@ -57,13 +57,6 @@ binary_cols <- paste0("feature_", 1:1555)
 
 train_data[binary_cols][is.na(train_data[binary_cols])] <- 0
 test_data[binary_cols][is.na(test_data[binary_cols])]   <- 0
-
-scale_params <- preProcess(train_data[, c("height", "width", "aspect_ratio")],
-                           method = c("center", "scale"))
-
-train_data <- predict(scale_params, train_data)
-test_data  <- predict(scale_params, test_data)
-
 # ====================== LOẠI BỎ DUPLICATE ======================
 train_data <- unique(train_data)
 
