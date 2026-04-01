@@ -11,8 +11,8 @@ library(ggplot2)
 cat("Packages loaded instantly! Starting training...\n")
 
 # 2. Load the datasets
-train_df <- read.csv("/content/XSTK-252-Project/Preprocessed_data/train_1.csv")
-test_df <- read.csv("/content/XSTK-252-Project/Preprocessed_data/test_1.csv")
+train_df <- read.csv("/content/XSTK-252-Project/Preprocessed_data/train.csv")
+test_df <- read.csv("/content/XSTK-252-Project/Preprocessed_data/test.csv")
 
 # 3. CONVERT CLASS FIRST (Crucial Step)
 # This changes 'class' from text/character to a factor so na.roughfix can handle it
