@@ -8,7 +8,7 @@ library(caret)
 library(pROC)
 library(ggplot2)
 
-cat("✅ Packages loaded instantly! Starting training...\n")
+cat("Packages loaded instantly! Starting training...\n")
 
 # 2. Load the datasets
 train_df <- read.csv("/content/XSTK-252-Project/Preprocessed_data/train_1.csv")
@@ -29,7 +29,7 @@ rf_model <- randomForest(
   class ~ .,
   data = train_df,
   ntree = 500,
-  importance = TRUE
+  importance = TRUE,
   classwt = c("ad." = 1, "nonad." = 1)
 )
 
