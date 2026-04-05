@@ -41,3 +41,22 @@ print(conf_results)
 
 # 7. Visualization
 varImpPlot(rf_model, n.var = 20, main = "Top 20 Important Features")
+cat("\n--- 1. Mann-Whitney U Test for Width ---\n")
+# Testing if the median width is different between 'ad.' and 'nonad.'
+width_test <- wilcox.test(width ~ class, data = train_df)
+print(width_test)
+cat("\n--- 2. Chi-Square Test for Feature 349 ---\n")
+
+# Create a contingency table of feature_349 vs class
+table_349 <- table(train_df$feature_349, train_df$class)
+
+# Run the Chi-Square test
+chi_test_349 <- chisq.test(table_349)
+
+# Print the table to see the raw counts
+print("Contingency Table:")
+print(table_349)
+
+# Print the test results
+print("Chi-Square Results:")
+print(chi_test_349)
